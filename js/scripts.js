@@ -1,28 +1,35 @@
 //business logic
-var leapYear = function(year) {
-  if ((year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0)) {
-    return true;
-  } else {
-    return false;
+function toPigLatin(sentence){
+  var sentenceArray = sentence.split(" ");
+  var pigArray = sentenceArray.map(convert);
+  pigSentence = pigArray.join(" ");
+  return pigSentence;
+}
+
+function convert(word){
+  for(var i=0; i<word.length; i++) {
+    // if ("yY".includes(word[1+i])){
+    //   word = word.substr(1) + word.substr(0,1);
+    // }
+    if (!"AEIOUaeiou".includes(word[0])){
+      if(((word.substr(0,1)==="q")||("Q"===word.substr(0,1)))&&((word.substr(1,1)==="u")||("U"===word.substr(1,1)))) {
+        word = word.substr(2) + word.substr(0,2);
+      } else {
+        word = word.substr(1) + word.substr(0,1);
+      }
+    } else {
+      word+="ay";
+      return word;
+    }
   }
-};
+}
 
 // user interface logic
 $(document).ready(function() {
-  $("form#leap-year").submit(function(event) {
+  $("form").submit(function(event) {
     event.preventDefault();
-    var year = parseInt($("input#year").val());
-    var result = leapYear(year);
-    $("#result").text(result);
-
-    $(".year").text(year);
-
-    if (!result) {
-      $(".not").text("not");
-    } else {
-      $(".not").text("");
-    }
-
-    $("#result").show();
+    var sentence = $("#sentence").val();
+    $("#translatedSentence").text(toPigLatin(sentence));
   });
 });
+//if("Yy".includes(word[1+i])){
